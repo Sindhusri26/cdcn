@@ -1,7 +1,10 @@
-create xyz,y file:
-PROGRAM:
+Create a file named xyz.y and paste this code into it.
+
 %{
 #include <stdio.h>
+
+int yylex(void);
+int yyerror(char *s);
 %}
 
 %token NUMBER
@@ -24,15 +27,28 @@ F : '(' E ')'
 
 %%
 
-int yylex()
+int yylex(void)
 {
-    char c;
+    int c;
 
-    c = getchar();
+    do
+    {
+        c = getchar();
+    } while (c == ' ' || c == '\t' || c == '\n' || c == '\r');
+
+    if (c == EOF)
+        return 0;
 
     if (c >= '0' && c <= '9')
     {
-        while ((c = getchar()) >= '0' && c <= '9');
+        do
+        {
+            c = getchar();
+        } while (c >= '0' && c <= '9');
+
+        if (c != EOF)
+            ungetc(c, stdin);
+
         return NUMBER;
     }
 
@@ -45,7 +61,7 @@ int yyerror(char *s)
     return 0;
 }
 
-int main()
+int main(void)
 {
     printf("Enter arithmetic expression: ");
 
@@ -55,11 +71,70 @@ int main()
     return 0;
 }
 
-Step 1
-yacc -d expr.y
 
-Step 2
-gcc y.tab.c -o expr
 
-Step 3
-./expr
+Steps to execute the program
+1. Open PowerShell as Administrator
+- Search for PowerShell in Windows.
+- Right-click and select Run as administrator.
+2. Install WSL and Ubuntu
+wsl --install -d Ubuntu
+
+
+Restart your laptop if Windows asks you to.
+3. Open Ubuntu
+- Search for Ubuntu in the Start menu and open it.
+- Create a username and password if prompted.
+- Nothing appears while typing your password. This is normal.
+4. Update Ubuntu
+sudo apt update
+
+
+5. Install YACC/Bison, Flex and GCC
+sudo apt install bison flex gcc
+
+
+If asked Do you want to continue? [Y/n], type Y and press Enter.
+6. Check YACC installation
+yacc --version
+
+
+If a version is displayed, YACC is installed.
+7. Create a folder
+mkdir -p compiler
+cd compiler
+
+
+8. Create the YACC file
+nano xyz.y
+
+
+Paste the program given above.
+Save the file:
+- Press Ctrl + O
+- Press Enter
+- Press Ctrl + X
+9. Generate the parser
+yacc -d xyz.y
+
+
+10. Compile the program
+gcc -w y.tab.c -o xyz
+
+
+11. Run the program
+./xyz
+
+
+12. Enter the input
+For a valid expression, enter:
+6-2
+
+
+Then press Ctrl + D on a new line to signal the end of input.
+Expected output:
+Enter arithmetic expression: 6-2
+Valid expression
+
+
+You can also test 6+2*3 or (6-2)*3. For an invalid expression, try 6+*2; it should display Invalid expression.
