@@ -107,11 +107,61 @@ int main()
 }
 
 
-STEPS TO EXECUTE:
-Step 1
-Generate parser:yacc -d ast.y
-Step 2
-Compile:gcc y.tab.c -o ast
-Step 3
-Run:./ast
-Enter:i+i*i
+1. Open PowerShell as Administrator
+- Search PowerShell in Windows.
+- Right-click → Run as administrator.
+2. Install WSL + Ubuntu
+wsl --install -d Ubuntu
+
+3. Restart the laptop if Windows asks you to.
+4. Open Ubuntu
+- Search Ubuntu in the Start menu.
+- Open it.
+- Wait for installation to finish.
+5. Create Ubuntu username and password
+- Enter any username.
+- Enter a password.
+- ⚠️ While typing the password, nothing will appear. That's normal.
+Install YACC and required tools
+6. Update Ubuntu
+sudo apt update
+
+7. Install YACC/Bison, Flex and GCC
+sudo apt install bison flex gcc
+
+When it asks:
+Do you want to continue? [Y/n]
+
+Type:
+Y
+
+8. Check installation
+yacc --version
+
+If it shows a version, YACC is installed.
+Run the YACC program
+9. Create a folder
+mkdir compiler
+cd compiler
+
+10. Create the YACC file
+nano ast.y
+
+11. Paste the YACC code into it.
+12. Save:
+- Ctrl + O
+- Enter
+- Ctrl + X
+13. Generate the parser
+yacc -d ast.y
+
+14. Compile
+gcc y.tab.c -o ast
+
+15. Run
+./ast
+
+16. Enter input
+i+i*i
+
+17. You will get the Abstract Syntax Tree.
