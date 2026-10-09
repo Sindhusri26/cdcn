@@ -1,89 +1,51 @@
-grammar:
-E → E + T | T
-T → T * F | F
-F → ( E ) | id
-
-Step 1 — YACC file
-Create:ast.y
-
-
-
-
-PROGRAM:
-
 %{
 #include <stdio.h>
-#include <stdlib.h>
 
-struct Node
-{
-    char value;
-    struct Node *left;
-    struct Node *right;
-};
-
-struct Node *root;
-
-struct Node* node(char value, struct Node *left, struct Node *right)
-{
-    struct Node *n = malloc(sizeof(struct Node));
-    n->value = value;
-    n->left = left;
-    n->right = right;
-    return n;
-}
-
-void print(struct Node *r, int space)
-{
-    if (r == NULL)
-        return;
-
-    space += 5;
-
-    print(r->right, space);
-
-    printf("\n");
-    for (int i = 5; i < space; i++)
-        printf(" ");
-
-    printf("%c\n", r->value);
-
-    print(r->left, space);
-}
+int yylex(void);
+int yyerror(char *s);
 %}
 
-%union
-{
-    struct Node *ptr;
-}
-
-%token <ptr> ID
-%type <ptr> E T F
+%token NUMBER
 
 %%
 
-E : E '+' T   { $$ = node('+', $1, $3); root = $$; }
-  | T         { $$ = $1; root = $$; }
+E : E '+' T
+  | E '-' T
+  | T
   ;
 
-T : T '*' F   { $$ = node('*', $1, $3); }
-  | F         { $$ = $1; }
+T : T '*' F
+  | T '/' F
+  | F
   ;
 
-F : '(' E ')' { $$ = $2; }
-  | ID        { $$ = $1; }
+F : '(' E ')'
+  | NUMBER
   ;
 
 %%
 
-int yylex()
+int yylex(void)
 {
-    char c = getchar();
+    int c;
 
-    if (c == 'i')
+    do {
+        c = getchar();
+    } while (c == ' ' || c == '\t' || c == '\n' || c == '\r');
+
+    if (c == EOF)
+        return 0;
+
+    if (c >= '0' && c <= '9')
     {
-        yylval.ptr = node('i', NULL, NULL);
-        return ID;
+        do {
+            c = getchar();
+        } while (c >= '0' && c <= '9');
+
+        if (c != EOF)
+            ungetc(c, stdin);
+
+        return NUMBER;
     }
 
     return c;
@@ -91,27 +53,77 @@ int yylex()
 
 int yyerror(char *s)
 {
-    printf("Invalid expression\n");
+    printf("Parser error: %s\n", s);
     return 0;
 }
 
-int main()
+int main(void)
 {
-    printf("Enter expression using i for id: ");
-    yyparse();
+    printf("Enter arithmetic expression: ");
 
-    printf("\nAbstract Syntax Tree:\n");
-    print(root, 0);
+    if (yyparse() == 0)
+        printf("Valid expression\n");
 
     return 0;
 }
 
 
-STEPS TO EXECUTE:
-Step 1
-Generate parser:yacc -d ast.y
-Step 2
-Compile:gcc y.tab.c -o ast
-Step 3
-Run:./ast
-Enter:i+i*i
+/*
+1. Open PowerShell as Administrator
+- Search PowerShell in Windows.
+- Right-click → Run as administrator.
+2. Install WSL + Ubuntu
+wsl --install -d Ubuntu
+
+3. Restart the laptop if Windows asks you to.
+4. Open Ubuntu
+- Search Ubuntu in the Start menu.
+- Open it.
+- Wait for installation to finish.
+5. Create Ubuntu username and password
+- Enter any username.
+- Enter a password.
+- ⚠️ While typing the password, nothing will appear. That's normal.
+Install YACC and required tools
+6. Update Ubuntu
+sudo apt update
+
+7. Install YACC/Bison, Flex and GCC
+sudo apt install bison flex gcc
+
+When it asks:
+Do you want to continue? [Y/n]
+
+Type:
+Y
+
+8. Check installation
+yacc --version
+
+If it shows a version, YACC is installed.
+Run the YACC program
+9. Create a folder
+mkdir compiler
+cd compiler
+
+10. Create the YACC file
+nano ast.y
+
+11. Paste the YACC code into it.
+12. Save:
+- Ctrl + O
+- Enter
+- Ctrl + X
+13. Generate the parser
+yacc -d ast.y
+
+14. Compile
+gcc y.tab.c -o ast
+
+15. Run
+./ast
+
+16. Enter input
+i+i*i
+
+*/
