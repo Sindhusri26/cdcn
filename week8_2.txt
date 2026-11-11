@@ -1,0 +1,177 @@
+#include <iostream>
+#include <string>
+#include <cctype>
+using namespace std;
+
+struct Node
+{
+    string val;
+    Node *left, *right;
+};
+
+Node* create(string s, Node* l = NULL, Node* r = NULL)
+{
+    Node* t = new Node;
+    t->val = s;
+    t->left = l;
+    t->right = r;
+    return t;
+}
+
+string s;
+int i = 0;
+bool valid = true;
+
+Node* expr();
+
+Node* factor()
+{
+    if(i >= s.length())
+    {
+        valid = false;
+        return NULL;
+    }
+
+    if(s[i] == '(')
+    {
+        i++;
+        Node* t = expr();
+
+        if(i >= s.length() || s[i] != ')')
+        {
+            valid = false;
+            return NULL;
+        }
+
+        i++;
+        return t;
+    }
+
+    string t = "";
+
+    while(i < s.length() && isalnum((unsigned char)s[i]))
+        t += s[i++];
+
+    if(t.empty())
+    {
+        valid = false;
+        return NULL;
+    }
+
+    return create(t);
+}
+
+Node* term()
+{
+    Node* t = factor();
+
+    while(valid && i < s.length() &&
+          (s[i] == '*' || s[i] == '/'))
+    {
+        string op(1, s[i++]);
+        Node* r = factor();
+
+        if(!valid) return NULL;
+
+        t = create(op, t, r);
+    }
+
+    return t;
+}
+
+Node* expr()
+{
+    Node* t = term();
+
+    while(valid && i < s.length() &&
+          (s[i] == '+' || s[i] == '-'))
+    {
+        string op(1, s[i++]);
+        Node* r = term();
+
+        if(!valid) return NULL;
+
+        t = create(op, t, r);
+    }
+
+    return t;
+}
+
+int n = 0;
+
+string generate(Node* t)
+{
+    if(t == NULL) return "";
+
+    if(t->left == NULL && t->right == NULL)
+        return t->val;
+
+    string a = generate(t->left);
+    string b = generate(t->right);
+
+    string r = "R" + to_string(++n);
+
+    cout << "MOV " << a << ", " << r << "\n";
+
+    if(t->val == "+") cout << "ADD " << b << ", " << r << "\n";
+    if(t->val == "-") cout << "SUB " << b << ", " << r << "\n";
+    if(t->val == "*") cout << "MUL " << b << ", " << r << "\n";
+    if(t->val == "/") cout << "DIV " << b << ", " << r << "\n";
+
+    return r;
+}
+
+int main()
+{
+    cout << "Enter an expression: ";
+    cin >> s;
+
+    Node* root = expr();
+
+    if(!valid || i != s.length() || root == NULL)
+    {
+        cout << "Invalid expression\n";
+        return 0;
+    }
+
+    cout << "\nGenerated Machine Code:\n";
+    string result = generate(root);
+
+    cout << "\nFinal Result stored in " << result << endl;
+
+    return 0;
+}
+
+
+STEPS : 
+Execution steps in Ubuntu
+Step 1: Install required packages
+sudo apt update
+sudo apt install bison flex gcc -y
+
+
+Step 2: Create a folder
+mkdir -p compiler
+cd compiler
+
+Step 2: Create the C++ file
+nano week8_2.cpp
+
+
+Paste the above code.
+
+Save:
+- Press Ctrl + O.
+- Press Enter.
+- Press Ctrl + X.
+Step 3: Compile
+g++ week8_2.cpp -o week8_2
+
+
+Step 4: Run
+./week8_2
+
+
+3. Sample output
+Input
+a+b*c
