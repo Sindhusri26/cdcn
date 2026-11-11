@@ -82,3 +82,95 @@ ftp localhost
 • To download a file: get test.txt
 • To upload a file: put sample.txt
 • To exit: bye
+
+
+
+
+
+
+PYHON CODE:
+
+Step 1: Create project files
+Create a folder in VS Code.
+Week13/
+│
+├── server.py
+├── client.py
+└── shared/
+    └── file1.txt
+
+Step 2: Install library.  Open VS Code Terminal:
+python -m pip install pyftpdlib
+
+server.py:
+
+from pyftpdlib.authorizers import DummyAuthorizer
+from pyftpdlib.handlers import FTPHandler
+from pyftpdlib.servers import FTPServer
+
+# Create authorizer
+authorizer = DummyAuthorizer()
+
+# Add user
+authorizer.add_user("student", "12345", "./shared", perm="elradfmw")
+
+# Create handler
+handler = FTPHandler
+handler.authorizer = authorizer
+
+# Create FTP server
+server = FTPServer(("127.0.0.1", 2121), handler)
+
+print("FTP Server started...")
+print("Username: student")
+print("Password: 12345")
+print("Port: 2121")
+
+# Start server
+server.serve_forever()
+
+
+client.py:
+
+from ftplib import FTP
+
+# Connect to FTP server
+ftp = FTP()
+
+ftp.connect("127.0.0.1", 2121)
+
+# Login
+ftp.login("student", "12345")
+
+print("Connected to FTP Server")
+
+# Display files
+print("Files available:")
+print(ftp.nlst())
+
+# Close connection
+ftp.quit()
+
+print("Disconnected from FTP Server")
+
+RUNNING:
+Open two terminals using the + button.
+
+Terminal 1 – Server
+python server.py
+
+Output:
+FTP Server started...
+Username: student
+Password: 12345
+Port: 2121
+
+
+Terminal 2 – Client
+python client.py
+
+Output:
+Connected to FTP Server
+Files available:
+['file1.txt']
+Disconnected from FTP Server
