@@ -1,75 +1,89 @@
+
 #include <iostream>
 #include <cstdlib>
 using namespace std;
+
 int main()
 {
-int ch;
-cout << " BASIC NETWORKING COMMANDS\n";
+    int ch;
 
-cout << "\n1. IP Configuration";
-cout << "\n2. Ping";
-cout << "\n3. Trace Route";
-cout << "\n4. DNS Lookup";
-cout << "\n5. Host Name";
-cout << "\n6. ARP Table";
-cout << "\n7. Network Statistics";
-cout << "\n8. MAC Address";
-cout << "\n9. Exit";
-while (true)
-{
-cout << "\n\nEnter your choice : ";
-cin >> ch;
-if (cin.fail())
-{
-cin.clear();
-cin.ignore(1000, '\n');
-cout << "Enter a number from 1 to 9.\n";
-continue;
-}
+    cout << "===== BASIC NETWORKING COMMANDS =====\n";
 
-switch (ch)
-{
-case 1:
-cout << "IP Configuration\n\n";
-system("ipconfig getifaddr en0");
-system("ipconfig getoption en0 subnet_mask");
-system("ipconfig getoption en0 router");
-break;
-case 2:
-cout << "Ping Google\n\n";
-system("ping -c 4 google.com");
-break;
-case 3:
-cout << "Trace Route to Google\n\n";
-system("traceroute google.com");
-break;
-case 4:
-cout << "DNS Lookup\n\n";
-system("nslookup google.com");
-break;
-case 5:
-cout << "Computer Host Name\n\n";
-system("hostname");
-break;
-case 6:
-cout << "ARP Table\n\n";
-system("arp -a");
-break;
-case 7:
-cout << "Network Statistics\n\n";
-system("netstat -an”);
-break;
-case 8:
-cout << "MAC Address\n\n";
-system("ifconfig en0 | grep ether");
-break;
-case 9:
-cout << "Exiting program...\n";
-return 0;
-default:
-cout << "Invalid choice! Enter 1 to 9.";
-}
-cout << "\n----------------------------------------";
-}
-return 0;
+    cout << "\n1. IP Configuration";
+    cout << "\n2. Ping";
+    cout << "\n3. Trace Route";
+    cout << "\n4. DNS Lookup";
+    cout << "\n5. Host Name";
+    cout << "\n6. ARP Table";
+    cout << "\n7. Network Statistics";
+    cout << "\n8. MAC Address";
+    cout << "\n9. Exit";
+
+    while (true)
+    {
+        cout << "\n\nEnter your choice: ";
+        cin >> ch;
+
+        if (cin.fail())
+        {
+            cin.clear();
+            cin.ignore(1000, '\n');
+            cout << "Enter a number from 1 to 9.\n";
+            continue;
+        }
+
+        switch (ch)
+        {
+            case 1:
+                cout << "\nIP Configuration\n";
+                system("ipconfig");
+                break;
+
+            case 2:
+                cout << "\nPing Google\n";
+                system("ping -n 4 google.com");
+                break;
+
+            case 3:
+                cout << "\nTrace Route to Google\n";
+                system("tracert -h 5 google.com");
+                break;
+
+            case 4:
+                cout << "\nDNS Lookup\n";
+                system("nslookup google.com");
+                break;
+
+            case 5:
+                cout << "\nComputer Host Name\n";
+                system("hostname");
+                break;
+
+            case 6:
+                cout << "\nARP Table\n";
+                system("arp -a");
+                break;
+
+            case 7:
+                cout << "\nNetwork Statistics\n";
+                system("netstat -an");
+                break;
+
+            case 8:
+                cout << "\nMAC Address\n";
+                system("getmac");
+                break;
+
+            case 9:
+                cout << "\nExiting program...\n";
+                return 0;
+
+            default:
+                cout << "Invalid choice! Enter 1 to 9.";
+        }
+
+        cout << "\n----------------------------------------";
+    }
+
+    return 0;
 }
