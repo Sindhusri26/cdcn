@@ -141,16 +141,19 @@ int main()
 }
 
 STEPS : 
+To install bison and flex package 
+2. Execution steps in Ubuntu
+Step 1: Install required packages
+sudo apt update
+sudo apt install bison flex gcc -y
+
+Step 2: Create a folder
+mkdir -p file name 
+cd file name
+
 
 3. Execution steps in Ubuntu
 Follow these steps one by one.
-
-Step 1: Create a folder
-mkdir WEEK6_1
-
-
-Step 2: Open the folder
-cd WEEK6_1
 
 
 Step 3: Create the YACC file
