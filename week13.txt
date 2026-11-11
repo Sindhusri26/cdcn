@@ -90,14 +90,24 @@ ftp localhost
 
 PYHON CODE:
 
-Step 1: Create project files
-Run:
+Step 1: Open VS Code Terminal
+
+Open your Week13 folder in VS Code.
+
+Press Ctrl + backtick to open the terminal.
+
+Step 2: Create virtual environment
 python -m venv .venv
 
 
 Step 3: Activate virtual environment
-For Windows PowerShell:
 .venv\Scripts\Activate.ps1
+
+
+You should see (.venv) in the terminal.
+
+Step 4: Install FTP library
+python -m pip install pyftpdlib
 
 
 Create a folder in VS Code.
@@ -108,8 +118,6 @@ Week13/
 └── shared/
     └── file1.txt
 
-Step 2: Install library.  Open VS Code Terminal:
-python -m pip install pyftpdlib
 
 server.py:
 
