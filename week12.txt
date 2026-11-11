@@ -97,11 +97,11 @@ client.close()
 
 HOW TO RUN:
 Terminal 1:
-python server.py
+python3 server.py
 
 
 Terminal 2: Click the + button in the terminal panel.
-python client.py
+python3 client.py
 
 
 Step 5: Output
