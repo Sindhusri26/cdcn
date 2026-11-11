@@ -1,0 +1,161 @@
+%{
+#include <stdio.h>
+#include <stdlib.h>
+
+int yylex(void);
+int yyerror(const char *s);
+
+int result;
+%}
+
+%union
+{
+    int num;
+}
+
+%token <num> NUMBER
+%type <num> E
+
+%left '+' '-'
+%left '*' '/'
+%right UMINUS
+
+%%
+
+input : E
+        {
+            result = $1;
+        }
+      ;
+
+E : E '+' E
+    {
+        $$ = $1 + $3;
+    }
+  | E '-' E
+    {
+        $$ = $1 - $3;
+    }
+  | E '*' E
+    {
+        $$ = $1 * $3;
+    }
+  | E '/' E
+    {
+        if($3 == 0)
+        {
+            printf("Division by zero\n");
+            YYERROR;
+        }
+
+        $$ = $1 / $3;
+    }
+  | '-' E %prec UMINUS
+    {
+        $$ = -$2;
+    }
+  | '(' E ')'
+    {
+        $$ = $2;
+    }
+  | NUMBER
+    {
+        $$ = $1;
+    }
+  ;
+
+%%
+
+int yylex(void)
+{
+    int c;
+
+    do
+    {
+        c = getchar();
+    }
+    while(c == ' ' || c == '\t' || c == '\n');
+
+    if(c == EOF)
+        return 0;
+
+    if(c >= '0' && c <= '9')
+    {
+        yylval.num = 0;
+
+        do
+        {
+            yylval.num = yylval.num * 10 + c - '0';
+            c = getchar();
+        }
+        while(c >= '0' && c <= '9');
+
+        if(c != EOF)
+            ungetc(c, stdin);
+
+        return NUMBER;
+    }
+
+    return c;
+}
+
+int yyerror(const char *s)
+{
+    printf("Invalid expression\n");
+    return 0;
+}
+
+int main()
+{
+    printf("Enter arithmetic expression: ");
+
+    if(yyparse() == 0)
+    {
+        printf("Valid expression\n");
+        printf("Result = %d\n", result);
+    }
+
+    return 0;
+}
+
+
+STEPS : 
+Execution steps in Ubuntu
+Step 1: Install required packages
+sudo apt update
+sudo apt install bison flex gcc -y
+
+
+Step 2: Create a folder
+mkdir -p compiler
+cd compiler
+
+Step 3: Create the YACC file
+nano week7.y
+
+
+Paste the complete code given above.
+
+Save the file:
+- Press Ctrl + O.
+- Press Enter.
+- Press Ctrl + X.
+Step 4: Generate the parser
+bison -dy week7.y
+
+
+Step 5: Compile the program
+gcc y.tab.c -o week7
+
+
+Step 6: Run the program
+./week7
+
+
+Step 7: Enter an expression
+
+Example:
+Enter arithmetic expression: 10+20*3
+
+
+Press Ctrl + D on a new line to finish the input
