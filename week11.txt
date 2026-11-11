@@ -87,3 +87,15 @@ int main()
 
     return 0;
 }
+Indiviual commands to run in command prompt:
+
+
+No.	Command	                         Purpose
+1	ipconfig	              Displays IP configuration
+2	ping -n 4 google.com	  Checks network connectivity
+3	tracert -h 5 google.com	   Displays route to Google
+4	nslookup google.com	       Finds DNS information
+5	hostname	                Displays computer name
+6	arp -a	                    Displays ARP table
+7	netstat -an	                Displays network connections
+8	getmac	                    Displays MAC address
