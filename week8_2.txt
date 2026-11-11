@@ -144,6 +144,24 @@ int main()
 
 
 STEPS : 
+UBUNTU INSTALLATION : 
+Steps to execute the program
+1. Open PowerShell as Administrator
+- Search for PowerShell in Windows.
+- Right-click and select Run as administrator.
+2. Install WSL and Ubuntu
+wsl --install -d Ubuntu
+
+
+Restart your laptop if Windows asks you to.
+3. Open Ubuntu
+- Search for Ubuntu in the Start menu and open it.
+- Create a username and password if prompted.
+- Nothing appears while typing your password. This is normal.
+4. Update Ubuntu
+sudo apt update
+
+
 Execution steps in Ubuntu
 Step 1: Install required packages
 sudo apt update
