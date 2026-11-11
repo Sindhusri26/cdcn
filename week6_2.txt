@@ -119,7 +119,7 @@ yacc -d xyz.y
 
 
 10. Compile the program
-gcc -w y.tab.c -o xyz
+gcc y.tab.c -o xyz
 
 
 11. Run the program
