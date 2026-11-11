@@ -1,0 +1,137 @@
+lexer.l
+%{
+#include "y.tab.h"
+%}
+
+%%
+[0-9]+       { return ID; }
+[ \t\n]+     { /* Ignore whitespace */ }
+"+"          { return PLUS; }
+"*"          { return MUL; }
+"("          { return LPAREN; }
+")"          { return RPAREN; }
+.            { return yytext[0]; }
+%%
+
+int yywrap()
+{
+    return 1;
+}
+
+
+
+
+Parser.y
+
+
+
+%{
+#include <stdio.h>
+#include <stdlib.h>
+
+int yylex();
+void yyerror(const char *s);
+%}
+
+%token ID PLUS MUL LPAREN RPAREN
+
+%%
+
+expr:
+      expr PLUS term
+    | term
+    ;
+
+term:
+      term MUL factor
+    | factor
+    ;
+
+factor:
+      LPAREN expr RPAREN
+    | ID
+    ;
+
+%%
+
+void yyerror(const char *s)
+{
+    printf("Invalid Expression\n");
+}
+
+int main()
+{
+    printf("Enter an expression:\n");
+
+    if (yyparse() == 0)
+        printf("Valid Expression\n");
+
+    return 0;
+}
+
+
+
+STEPS :
+Step 1: Create a project folder
+mkdir WEEK5
+cd WEEK5
+
+
+Step 2: Create Lex file
+nano lexer.l
+
+
+Paste the Lex code and save:
+- Ctrl + O
+- Enter
+- Ctrl + X
+Step 3: Create YACC file
+nano parser.y
+
+
+Paste the YACC code and save.
+
+Step 4: Generate Lex analyzer
+flex lexer.l
+
+
+Step 5: Generate LALR parser
+bison -dy parser.y
+
+
+Step 6: Compile both files
+gcc lex.yy.c y.tab.c -o parser
+
+
+If you get a yywrap error, use:
+gcc lex.yy.c y.tab.c -o parser -lfl
+
+
+Step 7: Execute the program
+./parser
+
+
+Step 8: Enter the expression
+
+Example:
+id+id*id
+
+
+If your Lex code uses spaces between tokens, enter:
+id + id * id
+
+
+Press Ctrl + D to finish input if the program waits for EOF.
+
+Step 9: Check the output
+
+Expected output:
+Valid Expression
+
+
+For an invalid expression such as:
+id+*id
+
+
+Expected output:
+Invalid Expression
