@@ -1,0 +1,88 @@
+#include <iostream>
+#include <string>
+#include <cctype>
+using namespace std;
+
+int main()
+{
+    string s;
+    int n = 0;
+
+    cout << "Enter an expression: ";
+    cin >> s;
+
+    for(int k = 0; k < 2; k++)
+    {
+        char op1, op2;
+
+        if(k == 0)
+            op1 = '*', op2 = '/';
+        else
+            op1 = '+', op2 = '-';
+
+        int i = 0;
+
+        while(i < s.length())
+        {
+            if(s[i] == op1 || s[i] == op2)
+            {
+                string a = "", b = "";
+                int j = i - 1;
+
+                while(j >= 0 && (isalnum(s[j]) || s[j] == '_'))
+                    j--;
+
+                a = s.substr(j + 1, i - j - 1);
+
+                j = i + 1;
+
+                while(j < s.length() && (isalnum(s[j]) || s[j] == '_'))
+                    j++;
+
+                b = s.substr(i + 1, j - i - 1);
+
+                string t = "t" + to_string(++n);
+
+                cout << t << " = " << a << " " << s[i] << " " << b << "\n";
+
+                s.replace(i - (int)a.length(),
+                          a.length() + 1 + b.length(), t);
+
+                i = 0;
+            }
+            else
+                i++;
+        }
+    }
+
+    return 0;
+}
+
+
+STEPS : 
+
+Step 1: Install required packages
+sudo apt update
+sudo apt install bison flex gcc -y
+
+
+Step 2: Create a folder
+mkdir -p compiler
+cd compiler
+
+Step 3: Create a C++ file
+nano week8_1.cpp
+
+
+Paste the above code.
+
+Save the file:
+- Press Ctrl + O.
+- Press Enter.
+- Press Ctrl + X.
+Step 4: Compile the program
+g++ week8_1.cpp -o week8_1
+
+
+Step 5: Execute the program
+./week8_1
