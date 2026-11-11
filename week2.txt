@@ -1,33 +1,40 @@
-Create a file called: lexer.l
 %{
 #include <stdio.h>
 %}
 
 %%
 
-"int"|"float"|"char"|"if"|"else"|"while"|"for"|"return"
-        { printf("%s -> KEYWORD\n", yytext); }
+"int"|"float"|"char"|"if"|"else"|"while"|"for"|"return" {
+    printf("%s -> KEYWORD\n", yytext);
+}
 
-[a-zA-Z_][a-zA-Z0-9_]*
-        { printf("%s -> IDENTIFIER\n", yytext); }
+[a-zA-Z_][a-zA-Z0-9_]* {
+    printf("%s -> IDENTIFIER\n", yytext);
+}
 
-[0-9]+
-        { printf("%s -> NUMBER\n", yytext); }
+[0-9]+ {
+    printf("%s -> NUMBER\n", yytext);
+}
 
-"+"|"-"|"*"|"/"|"="
-        { printf("%s -> OPERATOR\n", yytext); }
+"+"|"-"|"*"|"/"|"=" {
+    printf("%s -> OPERATOR\n", yytext);
+}
 
-"("|")"|"{"|"}"|";"|","
-        { printf("%s -> SYMBOL\n", yytext); }
+"("|")"|"{"|"}"|";"|"," {
+    printf("%s -> SYMBOL\n", yytext);
+}
 
-"//".*
-        { /* ignore comment */ }
+"//".* {
+    /* Ignore comments */
+}
 
-[ \t\n]+
-        { /* ignore spaces */ }
+[ \t\n]+ {
+    /* Ignore whitespace */
+}
 
-.
-        { printf("%s -> UNKNOWN\n", yytext); }
+. {
+    printf("%s -> UNKNOWN\n", yytext);
+}
 
 %%
 
@@ -42,20 +49,38 @@ int yywrap()
 {
     return 1;
 }
-Steps to execute:
-Step 1 — Create the file
-nano lexer.l
 
-Paste the code and save.
-Or create lexer.l directly in VS Code.
-Step 2 — Generate C code
+
+STEPS :
+2. Execution steps in Ubuntu
+Step 1: Install required packages
+sudo apt update
+sudo apt install bison flex gcc -y
+
+
+Step 2: Create a folder
+mkdir -p compiler
+cd compiler
+
+3. Execute these commands
+Step 1: Generate Lex analyzer
 flex lexer.l
 
-This creates:
-lex.yy.c
 
-Step 3 — Compile
-gcc lex.yy.c -o lexer
+Step 2: Compile
+gcc lex.yy.c -o lexer -lfl
 
-Step 4 — Run
+
+Step 3: Run
 ./lexer
+
+
+4. Test your program
+Enter:
+int main()
+{
+    int a = 10;
+    float b = 20;
+    a = a + b;
+    return 0;
+}
