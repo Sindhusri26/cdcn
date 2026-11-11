@@ -91,6 +91,15 @@ ftp localhost
 PYHON CODE:
 
 Step 1: Create project files
+Run:
+python -m venv .venv
+
+
+Step 3: Activate virtual environment
+For Windows PowerShell:
+.venv\Scripts\Activate.ps1
+
+
 Create a folder in VS Code.
 Week13/
 │
