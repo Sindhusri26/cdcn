@@ -138,3 +138,95 @@ Valid expression
 
 
 You can also test 6+2*3 or (6-2)*3. For an invalid expression, try 6+*2; it should display Invalid expression.
+
+
+
+
+cpp code : 
+
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+string s;
+int pos = 0;
+
+bool E();
+bool T();
+bool F();
+
+bool E()
+{
+    if(!T())
+        return false;
+
+    while(s[pos] == '+' || s[pos] == '-')
+    {
+        pos++;
+
+        if(!T())
+            return false;
+    }
+
+    return true;
+}
+
+bool T()
+{
+    if(!F())
+        return false;
+
+    while(s[pos] == '*' || s[pos] == '/')
+    {
+        pos++;
+
+        if(!F())
+            return false;
+    }
+
+    return true;
+}
+
+bool F()
+{
+    if(s[pos] == '(')
+    {
+        pos++;
+
+        if(!E())
+            return false;
+
+        if(s[pos] == ')')
+        {
+            pos++;
+            return true;
+        }
+
+        return false;
+    }
+
+    if(s[pos] >= '0' && s[pos] <= '9')
+    {
+        while(s[pos] >= '0' && s[pos] <= '9')
+            pos++;
+
+        return true;
+    }
+
+    return false;
+}
+
+int main()
+{
+    cout << "Enter arithmetic expression: ";
+    cin >> s;
+
+    if(E() && pos == s.length())
+        cout << "Valid expression\n";
+    else
+        cout << "Invalid expression\n";
+
+    return 0;
+}
+
