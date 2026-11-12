@@ -200,3 +200,126 @@ Step 7: Enter the input
 Enter expression using i for identifier:
 i+i*i
 Enter Ctrl+D at the end of input to get the output 
+
+
+
+
+
+CPP CODE : 
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Node
+{
+    char value;
+    Node *left, *right;
+};
+
+Node* node(char value, Node *left = NULL, Node *right = NULL)
+{
+    Node *n = new Node;
+    n->value = value;
+    n->left = left;
+    n->right = right;
+    return n;
+}
+
+string s;
+int pos = 0;
+
+Node* E();
+Node* T();
+Node* F();
+
+Node* E()
+{
+    Node *n = T();
+
+    while(s[pos] == '+' || s[pos] == '-')
+    {
+        char op = s[pos++];
+        n = node(op, n, T());
+    }
+
+    return n;
+}
+
+Node* T()
+{
+    Node *n = F();
+
+    while(s[pos] == '*' || s[pos] == '/')
+    {
+        char op = s[pos++];
+        n = node(op, n, F());
+    }
+
+    return n;
+}
+
+Node* F()
+{
+    if(s[pos] == '(')
+    {
+        pos++;
+        Node *n = E();
+
+        if(s[pos] == ')')
+            pos++;
+        else
+            return NULL;
+
+        return n;
+    }
+
+    if(s[pos] == 'i')
+    {
+        pos++;
+        return node('i');
+    }
+
+    return NULL;
+}
+
+void print(Node *r, int space)
+{
+    if(r == NULL)
+        return;
+
+    space += 5;
+
+    print(r->right, space);
+
+    cout << endl;
+
+    for(int i = 5; i < space; i++)
+        cout << " ";
+
+    cout << r->value << endl;
+
+    print(r->left, space);
+}
+
+int main()
+{
+    cout << "Enter expression using i for identifier: ";
+    cin >> s;
+
+    Node *root = E();
+
+    if(root != NULL && pos == s.length())
+    {
+        cout << "\nValid expression\n";
+        cout << "\nAbstract Syntax Tree:\n";
+        print(root, 0);
+    }
+    else
+    {
+        cout << "\nInvalid expression\n";
+    }
+
+    return 0;
+}
+
