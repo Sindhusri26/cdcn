@@ -99,8 +99,8 @@ Press Ctrl + backtick to open the terminal.
 Step 2: Create virtual environment
 python -m venv .venv
 
-
-Step 3: Activate virtual environment
+Step 3:  Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+Step 4: Activate virtual environment
 .venv\Scripts\Activate.ps1
 
 
