@@ -1,0 +1,190 @@
+PART 1: COMPILER DESIGN LAB
+1. What is a compiler?
+A compiler is a software program that converts high-level language into machine code.
+2. What are the phases of a compiler?
+There are six main phases:
+1. Lexical Analysis
+2. Syntax Analysis
+3. Semantic Analysis
+4. Intermediate Code Generation
+5. Code Optimization
+6. Code Generation
+7. What is a lexical analyzer?
+It is the first phase of a compiler. It reads source code and converts it into tokens.
+4. What are tokens, lexemes and patterns?
+- Token: Category of a word, like IDENTIFIER.
+- Lexeme: Actual word, like student.
+- Pattern: Rule used to identify a token.
+Example: int age = 20;
+- int → Keyword
+- age → Identifier
+- = → Operator
+- 20 → Number
+- ; → Special symbol
+5. What is the difference between Lex and YACC?
+- Lex is used to generate a lexical analyzer.
+- YACC is used to generate a syntax parser.
+6. What are yytext, yylex() and yyparse()?
+- yytext: Stores the matched text.
+- yylex(): Performs lexical analysis.
+- yyparse(): Performs syntax analysis.
+7. What are FIRST and FOLLOW?
+- FIRST: Set of terminals that can appear first in a string derived from a grammar symbol.
+- FOLLOW: Set of terminals that can appear immediately after a non-terminal.
+8. What is epsilon (ε)?
+Epsilon represents an empty string, meaning no symbol is produced.
+9. What is an LL(1) parser?
+It is a top-down parser that scans input from Left to right, produces Leftmost derivation and uses one lookahead symbol.
+10. What is left recursion?
+When a non-terminal calls itself as the first symbol in its production.
+
+Example:
+
+A → Aα | β
+
+It must be eliminated for ordinary predictive parsing.
+11. What is left factoring?
+It removes common prefixes from grammar productions to make parsing easier.
+
+Example:
+
+A → ab | ac
+
+After left factoring:
+
+A → aA'
+
+A' → b | c
+12. What is LALR parser?
+LALR stands for Look Ahead LR. It is a bottom-up parser that combines similar LR states to reduce parsing table size.
+13. What are shift-reduce and reduce-reduce conflicts?
+- Shift-reduce: Parser cannot decide whether to shift the next input symbol or reduce the current symbols.
+- Reduce-reduce: Parser cannot decide which production rule to reduce.
+14. What is an AST?
+AST stands for Abstract Syntax Tree. It represents the logical structure of a program in tree form.
+15. Difference between AST and Parse Tree?
+AST	Parse Tree
+Contains essential information	Contains complete grammar structure
+Smaller	Usually larger
+Removes unnecessary grammar symbols	Includes grammar symbols
+
+16. What are $$, $1 and $2 in YACC?
+- $$ represents the value of the left-hand side.
+- $1 represents the first symbol on the right-hand side.
+- $2 represents the second symbol on the right-hand side.
+17. What is operator precedence and associativity?
+- Precedence: Determines which operator is evaluated first.
+- Associativity: Determines the evaluation direction when operators have equal precedence.
+Example: Multiplication has higher precedence than addition.
+18. What is Three Address Code (TAC)?
+It is an intermediate code representation in which each instruction contains at most three addresses.
+
+Example:
+
+Expression: a = b + c * d
+t1 = c * d
+t2 = b + t1
+a = t2
+
+
+19. What are quadruples, triples and indirect triples?
+They are three representations of Three Address Code.
+- Quadruples: Operator, argument 1, argument 2, result.
+- Triples: Operator and two arguments, with results identified by instruction position.
+- Indirect triples: Uses pointers to refer to triples.
+
+PART 2: COMPUTER NETWORKS LAB
+20. What is a computer network?
+A computer network is a collection of interconnected computers that communicate and share resources.
+21. What are the seven layers of the OSI model?
+Remember this order:
+1. Physical
+2. Data Link
+3. Network
+4. Transport
+5. Session
+6. Presentation
+7. Application
+8. What is framing?
+Framing is the process of dividing data into smaller units called frames at the Data Link Layer.
+23. What is character stuffing?
+Character stuffing inserts an escape character before special characters that appear inside the data to avoid confusion with frame boundaries.
+24. What is bit stuffing?
+Bit stuffing inserts a 0 after every five consecutive 1s in the data.
+25. Difference between character stuffing and bit stuffing?
+Character stuffing	Bit stuffing
+Works with characters	Works with bits
+Inserts escape characters	Inserts 0 after five consecutive 1s
+Character-oriented	Bit-oriented
+
+26. What is the flag used in bit stuffing?
+The HDLC flag is 01111110. It indicates the beginning and ending of a frame.
+27. What is CRC?
+CRC stands for Cyclic Redundancy Check. It is an error-detection technique used to detect errors during data transmission.
+28. Why do we use XOR in CRC?
+XOR is used because CRC performs modulo-2 division, where subtraction is replaced by XOR.
+
+Remember:
+A	B	A XOR B
+0	0	0
+0	1	1
+1	0	1
+1	1	0
+
+29. What is modulo-2 division?
+It is binary division performed using XOR instead of normal subtraction. There are no carries or borrows.
+30. Can CRC detect and correct errors?
+CRC can detect errors but cannot directly correct them.
+31. What are CRC-12, CRC-16 and CRC-CCITT?
+They are different CRC standards that use different generator polynomials.
+- CRC-12: 12-bit CRC.
+- CRC-16: 16-bit CRC.
+- CRC-CCITT: Commonly uses the polynomial \(x^{16}+x^{12}+x^5+1\).
+32. What is an IP address?
+An IP address is a logical address used to identify a device on a network.
+33. Difference between IPv4 and IPv6?
+IPv4	IPv6
+32 bits	128 bits
+Example: 192.168.1.1	Example: 2001:db8::1
+Decimal format	Hexadecimal format
+
+34. What is a MAC address?
+A MAC address is a hardware address assigned to a network interface. A standard MAC address is 48 bits.
+35. What is DNS?
+DNS stands for Domain Name System. It converts domain names into IP addresses.
+
+Example: Converting google.com into its IP address.
+36. What is DHCP?
+DHCP stands for Dynamic Host Configuration Protocol. It automatically assigns IP addresses and other network configuration details to devices.
+37. What are LAN, MAN and WAN?
+- LAN: Local Area Network – covers a small area.
+- MAN: Metropolitan Area Network – covers a city.
+- WAN: Wide Area Network – covers large geographical areas.
+38. Difference between router, switch and hub?
+Router	Switch	Hub
+Connects different networks	Connects devices in a LAN	Connects devices in a LAN
+Uses IP addresses	Uses MAC addresses	Broadcasts to all ports
+
+39. What is the difference between TCP and UDP?
+TCP	UDP
+Connection-oriented	Connectionless
+Reliable delivery	No guaranteed delivery
+Slower generally	Faster generally
+Provides error recovery	No built-in retransmission
+
+40. What is FTP?
+FTP stands for File Transfer Protocol. It is used to upload and download files between computers.
+41. What are FTP port numbers?
+- Port 21: Control connection.
+- Port 20: Traditional active-mode data connection.
+42. Can we perform FTP on one laptop?
+Yes. We can install an FTP server and connect to it using an FTP client on the same laptop using localhost or 127.0.0.1.
+43. What is Dijkstra's algorithm?
+Dijkstra's algorithm is a greedy algorithm used to find the shortest path from a source vertex to all other vertices in a weighted graph with non-negative edge weights.
+44. Why is Dijkstra called a greedy algorithm?
+Because it always selects the unvisited vertex with the smallest tentative distance.
+45. Can Dijkstra handle negative weights?
+No. Dijkstra's algorithm does not work correctly with negative edge weights.
+46. What is the time complexity of Dijkstra's algorithm?
+- Adjacency matrix: \(O(V^2)\).
+- Priority queue with adjacency list: \(O((V+E)\log V)\).
