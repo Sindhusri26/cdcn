@@ -178,3 +178,36 @@ int main()
 
     return 0;
 }
+
+
+Execution:
+
+Run:
+g++ --version
+
+Step 1: Compile the program
+g++ filename.cpp -o filename
+
+Step 2: Run the program
+.\filename.exe
+
+
+
+Sample Input
+Enter number of productions: 3
+Enter grammar rules (example: E->TX):
+E->TX
+X->+TX|#
+T->i
+
+
+Sample Output
+FIRST SETS:
+FIRST(E) = { i }
+FIRST(T) = { i }
+FIRST(X) = { # + }
+
+FOLLOW SETS:
+FOLLOW(E) = { $ }
+FOLLOW(T) = { $ + }
+FOLLOW(X) = { $ }
